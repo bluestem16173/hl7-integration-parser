@@ -17,3 +17,33 @@ Lightweight HL7 integration service built with Node.js and Express that ingests,
 ---
 
 ## 🧠 Architecture Overview
+HL7 Message (text)
+↓
+Middleware (express.text)
+↓
+Parser (HL7 → JSON)
+↓
+Validation
+↓
+Database (SQLite)
+↓
+API Response (JSON)
+
+
+---
+
+## 🛠️ Tech Stack
+
+- Node.js  
+- Express  
+- SQLite  
+- JavaScript (ES6)  
+
+---
+
+## 📦 Installation
+
+```bash
+git clone https://github.com/bluestem16173/hl7-integration-parser.git
+cd hl7-integration-parser
+npm install

@@ -3,6 +3,10 @@ const app = express();
 
 app.use(express.text());
 
+app.get("/", (req, res) => {
+  res.send("HL7 Integration API is running");
+});
+
 function parseHL7(message) {
   const lines = message.split("\n");
   const data = {};
@@ -19,13 +23,17 @@ function parseHL7(message) {
     }
 
     if (segment === "OBX") {
-      data.observation = {
+      if (!data.observations) {
+        data.observations = [];
+      }
+
+      data.observations.push({
         test: parts[3],
         value: parts[5],
         unit: parts[6]
-      };
+      });
     }
-  });
+  }); // ✅ correct closing of forEach
 
   return data;
 }
