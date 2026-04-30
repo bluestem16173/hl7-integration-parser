@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const db = require("./db");
 
 app.use(express.text());
 
@@ -37,10 +38,39 @@ function parseHL7(message) {
 
   return data;
 }
+app.get("/labs/:patientId", (req, res) => {
+  const { patientId } = req.params;
 
+  db.all(
+    `SELECT * FROM labs WHERE patient_id = ?`,
+    [patientId],
+    (err, rows) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      res.json(rows);
+    }
+  );
+});
 app.post("/parse", (req, res) => {
-  const result = parseHL7(req.body);
-  res.json(result);
+  const parsed = parseHL7(req.body);
+
+  // Save each observation to DB
+  if (parsed.observations && parsed.patient) {
+    parsed.observations.forEach(obs => {
+      db.run(
+        `INSERT INTO labs (patient_id, test, value, unit) VALUES (?, ?, ?, ?)`,
+        [parsed.patient.id, obs.test, obs.value, obs.unit],
+        (err) => {
+          if (err) {
+            console.error("DB insert error:", err.message);
+          }
+        }
+      );
+    });
+  }
+
+  res.json(parsed);
 });
 
 app.listen(3000, () => console.log("Server running on port 3000"));

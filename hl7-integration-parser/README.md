@@ -46,4 +46,8 @@ API Response (JSON)
 ```bash
 git clone https://github.com/bluestem16173/hl7-integration-parser.git
 cd hl7-integration-parser
-npm install
+npm install   
+
+
+Demonstrates full ingestion, persistence, and retrieval of HL7-based lab data.
+![Postman successful POST API Endpoint](image.png)![Postaman successful POST API Endpoint](image-1.png)![Postaman successful POST API Endpoint](image-2.png)![Postaman successful GET API Endpoint](image-3.png)![Postaman successful GET API Endpoint](image-4.png)
